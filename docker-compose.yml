@@ -1,18 +1,58 @@
 #docker-compose.yml
-version: "3.8"
 
 services:
   server:
     build: .
     ports:
       - "8080:80"
+    environment:
+      DATABASE_URL: 'mysql://${MARIADB_USER}:${MARIADB_PASSWORD}@db_server:3306/${MARIADB_DATABASE}?serverVersion=11.5.2-MariaDB-ubu2404&charset=utf8mb4'
+      APP_ENV: ${APP_ENV}
     volumes:
       - ./app:/var/www/html
+    depends_on:
+      db_server:
+        condition: service_healthy
+    networks:
+      - adelyce_backend
 
-  db:
+  db_server:
     image: mariadb:11.5.2
+    ports:
+      - '33016:3306'
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${MARIADB_DATABASE}
       MARIADB_USER: ${MARIADB_USER}
       MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - adelyce_backend
+
+  db_admin:
+    image: phpmyadmin/phpmyadmin:5
+    ports:
+      - '8102:80'
+    environment:
+      PMA_HOST: db_server
+    depends_on:
+      db_server:
+        condition: service_healthy
+    volumes:
+      - db_admin_data:/var/www/html
+    networks:
+      - adelyce_backend
+
+volumes:
+  db_data:
+  db_admin_data:
+
+networks:
+  adelyce_backend:
