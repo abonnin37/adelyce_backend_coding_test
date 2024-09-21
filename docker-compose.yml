@@ -10,6 +10,8 @@ services:
       APP_ENV: ${APP_ENV}
     volumes:
       - ./app:/var/www/html
+    extra_hosts:
+      - host.docker.internal:host-gateway
     depends_on:
       db_server:
         condition: service_healthy

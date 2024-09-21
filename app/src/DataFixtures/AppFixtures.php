@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ShoppingList;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -25,12 +26,20 @@ class AppFixtures extends Fixture
         $user->setPassword($this->userPasswordHasher->hashPassword($user, "password"));
         $manager->persist($user);
 
+        $shoppingList1 = new ShoppingList();
+        $shoppingList1->setUser($user);
+        $manager->persist($shoppingList1);
+
         // Création d'un user admin
         $userAdmin = new User();
         $userAdmin->setEmail("test@admin.com");
         $userAdmin->setRoles(["ROLE_ADMIN"]);
         $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, "password"));
         $manager->persist($userAdmin);
+
+        $shoppingList2 = new ShoppingList();
+        $shoppingList2->setUser($userAdmin);
+        $manager->persist($shoppingList2);
 
         $manager->flush();
     }
