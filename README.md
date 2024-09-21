@@ -23,3 +23,13 @@ Réalisation d’une application permettant de créer une liste de course alimen
 3. Se positionner à la racine du projet et exécuter la commande `docker-compose up --build`.
 4. Les conteneurs se lancent automatiquement après le build. Vous pouvez vous rendre à l'adresse suivante pour accéder à l'application web: `http://localhost:8080/`.
 5. Vous pouvez vous rendre à l'adresse suivante pour accéder au panneau d'administration de la base de données.
+
+## Erreurs commune lors du build
+### Format des fichiers
+Erreurs rencontrés : 
+- `/usr/bin/env: 'bash\r': No such file or directory`
+- `/usr/bin/env: use -[v]S to pass options in shebang lines`
+- `exited with code 127`
+
+Le projet se construit dans un conteneur Docker sous environnement Linux. Il y a certains fichiers qui doivent être basculés au format Line Separator "LF" : les fichiers .env et le fichier build.sh.
+Relancez le commande `docker-compose up --build` après avoir fait ces modifications.

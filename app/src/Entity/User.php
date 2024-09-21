@@ -31,6 +31,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?ShoppingList $shoppingList = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,5 +112,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername() : string
     {
         return $this->getUserIdentifier();
+    }
+
+    public function getShoppingList(): ?ShoppingList
+    {
+        return $this->shoppingList;
+    }
+
+    public function setShoppingList(ShoppingList $shoppingList): static
+    {
+        // set the owning side of the relation if necessary
+        if ($shoppingList->getUser() !== $this) {
+            $shoppingList->setUser($this);
+        }
+
+        $this->shoppingList = $shoppingList;
+
+        return $this;
     }
 }
