@@ -1,8 +1,27 @@
 #docker-compose.yml
 
 services:
-  server:
-    build: .
+  front:
+    build:
+      context: .
+      dockerfile: docker/front/Dockerfile
+    ports:
+      - "4200:4200"
+    environment:
+      BASE_URL: 'back:80'
+    volumes:
+      - ./front:/var/www/front
+      - nodemodules:/var/www/front/node_modules
+    depends_on:
+      db_server:
+        condition: service_healthy
+    networks:
+      - adelyce
+
+  back:
+    build:
+      context: .
+      dockerfile: docker/back/Dockerfile
     ports:
       - "8080:80"
     environment:
@@ -16,7 +35,7 @@ services:
       db_server:
         condition: service_healthy
     networks:
-      - adelyce_backend
+      - adelyce
 
   db_server:
     image: mariadb:11.5.2
@@ -36,7 +55,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - adelyce_backend
+      - adelyce
 
   db_admin:
     image: phpmyadmin/phpmyadmin:5
@@ -48,13 +67,14 @@ services:
       db_server:
         condition: service_healthy
     volumes:
-      - db_admin_data:/var/www/html
+      - db_admin_data:/var/www/back
     networks:
-      - adelyce_backend
+      - adelyce
 
 volumes:
   db_data:
   db_admin_data:
+  nodemodules:
 
 networks:
-  adelyce_backend:
+  adelyce:
