@@ -51,8 +51,8 @@ class SharedItemController extends AbstractController
         return $this->json($item, Response::HTTP_OK, [], ['groups' => ['get_item']]);
     }
 
-    #[Route('/api/shared-items', name: 'delete_shared_item', methods: ['DELETE'])]
-    public function deleteSharedItem(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager): JsonResponse
+    #[Route('/api/shared-items/cancel', name: 'post_shared_item_cancel', methods: ['POST'])]
+    public function sharedItemCancel(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager): JsonResponse
     {
         $payload = $serializer->deserialize($request->getContent(), PostShareItem::class, 'json');
         $errors = $validator->validate($payload);
@@ -87,8 +87,8 @@ class SharedItemController extends AbstractController
     #[Route('/api/shared-items', name: 'get_all_shared_items', methods: ['GET'])]
     public function getAllSharedItems(UserService $userService): JsonResponse
     {
-        $connectedUser = $userService->getConnectedUser();
+        $items = $userService->getConnectedUser()->getItems();
 
-        return $this->json($connectedUser, Response::HTTP_OK, [], ['groups' => ['get_all_shared_items']]);
+        return $this->json($items, Response::HTTP_OK, [], ['groups' => ['get_all_shared_items']]);
     }
 }

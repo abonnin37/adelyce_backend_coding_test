@@ -18,6 +18,7 @@ class ShoppingList
 
     #[ORM\OneToOne(inversedBy: 'shoppingList', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['get_all_shared_items'])]
     private ?User $user = null;
 
     /**
