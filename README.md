@@ -21,8 +21,10 @@ Réalisation d’une application permettant de créer une liste de course alimen
 1. Installer Docker Desktop.
 2. Cloner le [projet git](https://github.com/abonnin37/adelyce_backend_coding_test) sur votre pc grâce à `git clone`.
 3. Se positionner à la racine du projet et exécuter la commande `docker-compose up --build`.
-4. Les conteneurs se lancent automatiquement après le build. Vous pouvez vous rendre à l'adresse suivante pour accéder à l'application web: `http://localhost:8080/`.
-5. Vous pouvez vous rendre à l'adresse suivante pour accéder au panneau d'administration de la base de données.
+4. Les conteneurs se lancent automatiquement après le build. Vous pouvez accéder aux services suivant :
+   1. Application web front : http://localhost:4200/ (via [projet adelyce_frontend_coding_test](https://github.com/abonnin37/adelyce_frontend_coding_test)).
+   2. API back accessible par Postman ou autre client similaire : http://localhost:8080/.
+   3. Panneau d'administration de la base de données : http://localhost:8102/. (Utilisateur : user / Mot de passe : secret)
 
 ## Erreurs commune lors du build
 ### Format des fichiers
