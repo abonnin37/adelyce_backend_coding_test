@@ -32,8 +32,8 @@ RUN pecl install xdebug \
     && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
-COPY docker/build.sh /build.sh
+COPY ./docker/back/apache.conf /etc/apache2/sites-enabled/000-default.conf
+COPY ./docker/back/build.sh /build.sh
 
 WORKDIR /var/www/html
 
