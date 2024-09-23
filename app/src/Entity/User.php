@@ -17,11 +17,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['get_item', 'get_user'])]
+    #[Groups(['get_item', 'get_user', 'get_all_shared_items'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['get_item', 'get_user'])]
+    #[Groups(['get_item', 'get_user', 'get_all_shared_items'])]
     private ?string $email = null;
 
     /**
@@ -43,7 +43,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Item>
      */
     #[ORM\ManyToMany(targetEntity: Item::class, mappedBy: 'users')]
-    #[Groups(['get_all_shared_items'])]
     private Collection $items;
 
     public function __construct()

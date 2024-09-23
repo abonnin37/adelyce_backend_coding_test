@@ -35,6 +35,7 @@ class Item
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
+    #[Groups(['get_all_shared_items'])]
     private ?ShoppingList $shoppingList = null;
 
     /**
